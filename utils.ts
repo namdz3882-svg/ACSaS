@@ -9,7 +9,8 @@ export const CHAPTER_NAMES: Record<string, string> = {
   '5': '第五章 飞机液压及气压传动系统',
   '6': '第六章 燃油系统',
   '7': '第七章 飞机防冰排雨系统',
-  '8': '第八章 飞机氧气系统与灭火系统'
+  '8': '第八章 飞机氧气系统与灭火系统',
+  '9': '第九章 气源系统和座舱环境控制系统'
 };
 
 export const formatQuestionLabel = (question: Question): string => {

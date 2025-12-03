@@ -1259,7 +1259,7 @@ export const QUESTIONS: Question[] = [
     content: '无助力飞行主操纵机械传动机构的型式有',
     options: opts('硬式传动', '软式传动', '涡轮蜗杆传动', '混合式传动'),
     answer: ['A', 'B', 'C'],
-    explanation: '涡轮蜗杆通常用于配平或襟翼，不做主操纵传动（因为不可逆且慢）。此处题库答案可能为ABC或ABD？通常主操纵是软、硬、混合。根据PDF OCR，答案是ABC？需核对上下文。通常教材分类为硬、软、混合。C选项存疑，但依照PDF OCR显示正确答案为ABC。'
+    explanation: '涡轮蜗杆通常用于配平或襟翼，不做主操纵传动（因为不可逆且慢）。此处题库答案可能为ABC或ABD？通常主操纵是软、硬、混合。C选项存疑，但依照PDF OCR显示正确答案为ABC。'
   },
   {
     id: '4-m-5',
@@ -2557,5 +2557,455 @@ export const QUESTIONS: Question[] = [
     options: opts('飞行中探测器接通时，工作灯一直亮', '当无烟雾时，工作灯光线射不到光电管', '当有失火烟雾时，进入探测器的烟雾使工作灯光线折射到光电管，光电管导通输出报警信号', '测试时，可模拟火情，输入烟雾，探测器有信号输出则为正常'),
     answer: ['B', 'C'],
     explanation: '光电探测利用丁达尔效应（散射/折射）。'
+  },
+
+  // ===================== 第九章 气源系统和座舱环境控制系统 =====================
+  {
+    id: '9-c-1',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '当人体长期处于 10,000 英尺高度上时，由于缺氧引起的最明显的症状是',
+    options: opts('脉搏和呼吸加快', '头痛和疲倦', '视力和判断力下降', '嘴唇和指甲变兰'),
+    answer: 'B',
+    explanation: '缺氧初期症状包括头痛、疲劳、迟钝等。'
+  },
+  {
+    id: '9-c-2',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '旅客机的舒适座舱高度界限值是',
+    options: opts('1,500 米', '2,400 米', '3,000 米', '4,500 米'),
+    answer: 'B',
+    explanation: '2400米（约8000英尺）是通常的舒适座舱高度界限。'
+  },
+  {
+    id: '9-c-3',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '旅客机的安全座舱高度界限值是',
+    options: opts('1,500 米', '2,400 米', '3,000 米', '4,500 米'),
+    answer: 'C',
+    explanation: '3000米（约10000英尺）是安全界限，超过此高度需要吸氧。'
+  },
+  {
+    id: '9-c-4',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '旅客机的最大座舱高度不超过',
+    options: opts('2,400 米', '3,000 米', '4,500 米', '6,000 米'),
+    answer: 'C',
+    explanation: '通常指在极端情况下的允许极限，或特定机型的设计极限。'
+  },
+  {
+    id: '9-c-5',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '现代飞机普遍采用增压气密座舱，其座舱高度是指',
+    options: opts('飞机飞行高度', '座舱所对应的海拔高度', '座舱内空气绝对压力所对应的海拔高度', '反映座舱内外空气压力差的高度'),
+    answer: 'C',
+    explanation: '座舱高度是一个气压概念，指座舱内气压对应的标准大气高度。'
+  },
+  {
+    id: '9-c-6',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '人体对座舱高度变化的敏感反应是',
+    options: opts('头痛、恶心', '视力模糊、运动迟缓', '胀耳或压耳感', '胃胀气，关节疼痛'),
+    answer: 'C',
+    explanation: '气压快速变化会导致耳膜内外压差，产生胀痛感（压耳）。'
+  },
+  {
+    id: '9-c-7',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '现代民用客机采用的气密座舱型式为',
+    options: opts('再生式气密座舱', '通风式气密座舱', '全密封式气密座舱', '自由通风式座舱'),
+    answer: 'B',
+    explanation: '不断引入新鲜空气并排出陈旧空气，保持气压和空气质量。'
+  },
+  {
+    id: '9-c-8',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '飞机气源系统的可能供气源有',
+    options: opts('发动机引起', 'APU 引气', '地面气源车', '以上都对'),
+    answer: 'D',
+    explanation: '飞行中主用发动机，地面用APU或气源车。'
+  },
+  {
+    id: '9-c-9',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '现代大中型运输机在飞行中气源系统的压缩空气来自',
+    options: opts('专用压气机供气', '发动机压气机引气或（和）APU 引气', '地面气源车供气', '冲压空气供气'),
+    answer: 'B',
+    explanation: '涡扇发动机压气机引气是最主要的来源。'
+  },
+  {
+    id: '9-c-10',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '为了兼顾飞机乘员的生理要求和减轻飞机自重这两方面，喷气式飞机的最大余压规定值为',
+    options: opts('7～9PSI', '5～7PSI', '7～9N/cm2', '5～7N/cm2'),
+    answer: 'A',
+    explanation: '通常最大压差控制在8-9 PSI左右。'
+  },
+  {
+    id: '9-c-11',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '为了兼顾乘员的舒适性,对旅客机座舱高度变化率的要求是',
+    options: opts('上升率≯500 英尺/分,下降率≯350 英尺/分', '上升率≯350 英尺/分,下降率≯500 英尺/分', '升降率≯500 英尺/分', '350 英尺/分≤升降率≤500 英尺/分'),
+    answer: 'A',
+    explanation: '下降时气压增加，耳朵更难平衡压力，所以下降率限制更严。'
+  },
+  {
+    id: '9-c-13',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '对座舱余压的表述,正确的是',
+    options: opts('座舱余压指飞机气密座舱内空气压力相对海平面的压力之差值', '座舱余压指飞机气密座舱内外压力之差值', '座舱余压指飞机气密座舱内外空气压力相对地面大气压的压力的差值', '座舱余压指未排出座舱外剩余空气的空气压力'),
+    answer: 'B',
+    explanation: '余压（Differential Pressure）即座舱内压与外压之差。'
+  },
+  {
+    id: '9-c-14',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '飞机气密座舱温度调节的基本方法是',
+    options: opts('控制气源系统的引气温度不超过规定值', '对气源系统的高温引气进行冷却处理', '保持对座舱供气量基本恒定,调节供给座舱的空气温度', '控制进入座舱的热空气流量适当'),
+    answer: 'C',
+    explanation: '通常保持流量满足通风要求，通过调节供气温度来控制舱温。'
+  },
+  {
+    id: '9-c-15',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '对设置气密座舱的飞机,其座舱压力是指',
+    options: opts('飞机所处海拔高度上的大气压力', '飞机气密座舱内空气的绝对压力', '飞机气密座舱内外气压差对座舱壁产生的压力', '飞机气密座舱内人员、货物对座舱产生的接触压力'),
+    answer: 'B',
+    explanation: '座舱压力即座舱高度对应的绝对压力。'
+  },
+  {
+    id: '9-c-16',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '现代民用客机空调组件中对引气制冷使用最广泛的系统是',
+    options: opts('蒸发式制冷系统', '冲压空气制冷系统', '空气循环制冷系统', '组合式制冷系统'),
+    answer: 'C',
+    explanation: '空气循环机（ACM）系统是主流。'
+  },
+  {
+    id: '9-c-17',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '非气密座舱飞机降低舱温的方法是采用',
+    options: opts('利用冲压冷空气使座舱通风降温', '制冷装置提供冷气', '控制供向座舱的空气温度', '简单空气循环冷却系统'),
+    answer: 'A',
+    explanation: '低空非增压飞机直接引入外部空气通风。'
+  },
+  {
+    id: '9-c-18',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '升压式空气循环制冷系统基本附件应包括',
+    options: opts('冲压空气源、热交换器、涡轮', '热交换器、压气机、涡轮', '热交换器、涡轮、风扇', '预冷器、热交换器、涡轮、水分离器'),
+    answer: 'D',
+    explanation: '完整的ACM系统组件。'
+  },
+  {
+    id: '9-c-19',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '升压式循环制冷的冷路空气是指',
+    options: opts('对热交换器进行冷却的冲压空气', '从热交换器冷却后流向压气机的空气', '从涡轮流向混和室的空气', '从预冷器流经热交换器、压气机、涡轮进入混和室的空气'),
+    answer: 'D',
+    explanation: '指被处理（冷却）的引气流路。'
+  },
+  {
+    id: '9-c-20',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '涡轮在升压式制冷系统中的基本功用是',
+    options: opts('带动压气机运转，为冷路空气增压', '使空气在涡轮内膨胀作功，消耗气体内能降温', '加速冷路空气流动', '降低冷路空气的压力'),
+    answer: 'B',
+    explanation: '涡轮膨胀做功是核心降温手段。'
+  },
+  {
+    id: '9-c-21',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '飞机空调系统中双温活门的功用是',
+    options: opts('根据控制器指令控制供气流量大小，以满足舱温要求', '根据控制器指令控制引气流量大小，以满足舱温要求', '根据控制器指令控制冷、热路活门的开度，使冷、热路空气以适当比例进入混和室，保持舱温在所要求的范围内', '视机型不同可以是以上某一种功用'),
+    answer: 'C',
+    explanation: '调节冷热比例来控制最终温度。'
+  },
+  {
+    id: '9-c-22',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '在自动调温工作方式下，双温活门双向电机是按____指令来工作的',
+    options: opts('座舱温度传感器发出的', '飞行员发出的', '座舱温度选择器发出的', '座舱温度控制器发出的'),
+    answer: 'D',
+    explanation: '控制器综合传感器和选择器的信号，计算后驱动电机。'
+  },
+  {
+    id: '9-c-23',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '增压气密座舱的压力制度是指气密座舱内空气绝对压力和余压',
+    options: opts('随座舱高度变化的规律', '随飞行高度变化的规律', '随座舱增压状态变化的规律', '随排气活门开度变化的规律'),
+    answer: 'A',
+    explanation: '压力制度描述了座舱压力随飞行高度变化的控制规律。'
+  },
+  {
+    id: '9-c-24',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '现代大型客机普遍采用的压力制度是',
+    options: opts('起飞和初始爬升为自由通风，爬升到一定高度时开始增压，直至余压达到一定值后保持余压不变。下降、进近、着陆相反', '预增压起飞，着陆滑跑保持一定余压，爬升与下降随高度按比例变化，巡航保持余压', '起飞保持舱压不变，直到余压达一定值时保持余压', '先自由通风，而后保持舱压不变'),
+    answer: 'B',
+    explanation: '现代客机为了舒适，起飞前会预增压，整个过程平滑控制。'
+  },
+  {
+    id: '9-c-25',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '正常飞行中，气密座舱增压系统排气活门是由_____控制其开度的',
+    options: opts('座舱增压方式选择开关', '座舱压力控制器', '真空膜盒', '交、直流电动机'),
+    answer: 'B',
+    explanation: '控制器发出指令控制活门。'
+  },
+  {
+    id: '9-c-26',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '气动式座舱压力调节系统排气活门的开、关动力是',
+    options: opts('座舱空气压力', '真空泵', '座舱压力与基准腔压力差', '弹簧弹性力'),
+    answer: 'C',
+    explanation: '气动系统利用压差驱动。'
+  },
+  {
+    id: '9-c-27',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '电子电动式座舱压力调节系统排气活门的开、关动力是',
+    options: opts('电磁驱动力', '交流或直流电机驱动力', '舱内、外压力差', '液压泵驱动力'),
+    answer: 'B',
+    explanation: '电机驱动活门运动。'
+  },
+  {
+    id: '9-c-28',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '座舱压力调节系统中安全活门的功用是',
+    options: opts('当供气管路气滤堵塞时起旁通作用，防止供气中断', '防止外界大气压力大于座舱压力', '防止座舱余压超过规定值', '防止座舱失压'),
+    answer: 'C',
+    explanation: '正释压活门，防止胀破。'
+  },
+  {
+    id: '9-c-29',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '座舱压力调节系统中负释压活门的功用是',
+    options: opts('防止座舱内的空气压力出现负值', '防止座舱内空气压力大于供气管路压力', '防止座舱余压过大', '防止座舱内空气压力低于外界大气压力'),
+    answer: 'D',
+    explanation: '防止座舱被吸瘪（外压大于内压）。'
+  },
+  {
+    id: '9-c-30',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '基本座舱压力调节系统的组成有',
+    options: opts('座舱压力调节器，负释压活门', '座舱压力调节器、排气活门', '排气活门、安全活门', '座舱压力调节器、安全活门、负释压活门'),
+    answer: 'B',
+    explanation: '最核心的控制组件是控制器和排气活门（Outflow Valve）。'
+  },
+  {
+    id: '9-c-31',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '飞行中飞行员报告座舱高度突然迅速上升而且无法控制在最大允许高度以下时，则应',
+    options: opts('让飞行员立即起动 APU 增大引气供应', '指挥飞机就近机场着陆', '指挥飞机紧急下降高度到 4500 米高度层飞行', '紧急下降高度到安全高度飞行'),
+    answer: 'D',
+    explanation: '紧急下降是失压的标准处置程序。'
+  },
+  {
+    id: '9-c-32',
+    chapter: '9',
+    type: QuestionType.Single,
+    content: '飞机气密座舱压力控制方法是',
+    options: opts('控制向座舱的供气量', '控制座舱向外界的排气量', '使用敏感电门，按需要接通或断开供气增大增压泵', '使用敏感电门，控制增压泵输出压力'),
+    answer: 'B',
+    explanation: '供气量恒定，控制排气量（Outflow valve）来调节压力。'
+  },
+  {
+    id: '9-m-1',
+    chapter: '9',
+    type: QuestionType.Multi,
+    content: '现代客机通常在万米高空巡航飞行。高空飞行的突出优点是',
+    options: opts('无云或少云，风速风向稳定，气象条件好', '空气极为新鲜，无污染，环境好', '保持相同空速比在低空时耗油率低，经济性好', '气温低，易进行调节'),
+    answer: ['A', 'C'],
+    explanation: '高空阻力小，省油，且气象稳定。'
+  },
+  {
+    id: '9-m-2',
+    chapter: '9',
+    type: QuestionType.Multi,
+    content: '对座舱空调系统的基本要求包括',
+    options: opts('座舱高度、座舱高度变化率和座舱余压应符合规定', '适宜的座舱温度和湿度', '足够的换气次数及适宜的空气流动速度', '空气含氧量高，无有害气体'),
+    answer: ['A', 'B', 'C'],
+    explanation: '压力、温湿度、通风是三大核心指标。'
+  },
+  {
+    id: '9-m-3',
+    chapter: '9',
+    type: QuestionType.Multi,
+    content: '各机型飞机的空调用气的可能气源有',
+    options: opts('发动机引气或 APU 供气', '专门的压气机供气', '冲压空气', '地面气源车或空调车供气'),
+    answer: ['A', 'B', 'D'],
+    explanation: '冲压空气主要用于冷却热交换器，通常不直接进入座舱（除非紧急情况）。'
+  },
+  {
+    id: '9-m-4',
+    chapter: '9',
+    type: QuestionType.Multi,
+    content: '空调组件温度调节的基本组成附件是',
+    options: opts('座舱温度选择器、传感器', '压气机和涡轮', '座舱温度控制器', '双向电机机热、冷路活门'),
+    answer: ['A', 'C', 'D'],
+    explanation: 'B是制冷组件，不是温控逻辑组件。'
+  },
+  {
+    id: '9-m-5',
+    chapter: '9',
+    type: QuestionType.Multi,
+    content: '空调系统设置再循环风扇的目的是',
+    options: opts('使已用空气再次返回座舱循环', '减小空调组件的工作负荷', '节省发动机功率', '使排出气密座舱的空气再次返回座舱循环'),
+    answer: ['A', 'B', 'C'],
+    explanation: '提高效率，减少引气需求。'
+  },
+  {
+    id: '9-m-6',
+    chapter: '9',
+    type: QuestionType.Multi,
+    content: '飞机座舱压力调节的方式有',
+    options: opts('间接气动式', '电液动式', '电子气动式', '电子电动式'),
+    answer: ['A', 'C', 'D'],
+    explanation: '常见的调节方式。'
+  },
+  {
+    id: '9-m-7',
+    chapter: '9',
+    type: QuestionType.Multi,
+    content: '关于座舱压力调节系统，正确的说法有',
+    options: opts('根据规定的座舱压力规律调节座舱压力', '调节座舱压力以满足飞行员所选择的余压、座舱高度及其变化率的参数要求', '控制座舱向外界的排气量而实现座舱压力调节', '在整个飞行过程中应使座舱压力保持恒定值'),
+    answer: ['A', 'B', 'C'],
+    explanation: 'D错，压力是变化的。'
+  },
+  {
+    id: '9-m-8',
+    chapter: '9',
+    type: QuestionType.Multi,
+    content: '电子电动式压力调节的工作特点是',
+    options: opts('压力控制器按压力调节规律和所选参数及座舱实际压力产生控制电信号', '电信号通过电磁活门控制排气活门基准腔正压源和负压源的通断', '座舱压力控制器发出控制信号控制排气活门驱动电机运转，带动主排气活门开大或关小，以调节座舱压力', '通常主排气活门既可由直流电机驱动，也可由交流电机驱动'),
+    answer: ['A', 'C', 'D'],
+    explanation: 'B是电子气动式的特点。'
+  },
+  {
+    id: '9-m-9',
+    chapter: '9',
+    type: QuestionType.Multi,
+    content: '通风式气密座舱空调系统的基本组成部分为',
+    options: opts('氧气供给系统', '气源系统', '空气温度调节系统', '座舱增压系统'),
+    answer: ['B', 'C', 'D'],
+    explanation: '气源、温控、增压是空调系统的三大部分。'
+  },
+  {
+    id: '9-s-1',
+    chapter: '9',
+    type: QuestionType.Short,
+    content: '简述对旅客机空调系统的基本要求',
+    answer: '座舱高度、座舱高度变化率、余压、温度和湿度、座舱通风换气量。',
+    explanation: '环境控制的关键参数。'
+  },
+  {
+    id: '9-s-2',
+    chapter: '9',
+    type: QuestionType.Short,
+    content: '简述座舱压力制度的概念。',
+    answer: '飞机座舱高度和余压随飞机飞行高度的变化规律。',
+    explanation: '定义了增压控制的逻辑曲线。'
+  },
+  {
+    id: '9-s-3',
+    chapter: '9',
+    type: QuestionType.Short,
+    content: '简述升压式空气循环制冷的主要附件及制冷基本原理。',
+    answer: '升压式空气循环制冷系统的制冷流程可概括为：来自发动机的引气被分为冷路和热路两部分，其中热路空气经双温活门的控制直接流向混合室。而冷路空气则在双温活门的控制下首先经过初级热交换器进行初步冷却，然后由空气循环机的压气机提高压力，再经过次级热交换器的降温，最后在空气循环机的涡轮中膨胀做功，得到的冷空气进入混合室与热空气按一定比例混合。',
+    explanation: '这是Bootstrap系统的标准工作循环。'
+  },
+  {
+    id: '9-j-1',
+    chapter: '9',
+    type: QuestionType.Judge,
+    content: '座舱气动式调压就是排气活门在气压控制信号与座舱压力之差作动下保持一定开度的调压方式。',
+    answer: 'Y',
+    explanation: '气动系统的原理。'
+  },
+  {
+    id: '9-j-2',
+    chapter: '9',
+    type: QuestionType.Judge,
+    content: '气密座舱的高度是指与飞行高度相对应的海拔高度。',
+    answer: 'N',
+    explanation: '座舱高度是指座舱压力对应的标准大气高度，通常远低于实际飞行高度。'
+  },
+  {
+    id: '9-j-3',
+    chapter: '9',
+    type: QuestionType.Judge,
+    content: '座舱高度变化率与座舱压力变化率是意义等价的两个概念。',
+    answer: 'Y',
+    explanation: '物理上等价，都是描述压力变化快慢。'
+  },
+  {
+    id: '9-j-4',
+    chapter: '9',
+    type: QuestionType.Judge,
+    content: '通常，气密座舱高度比实际飞行高度要低。',
+    answer: 'Y',
+    explanation: '因为座舱压力比外界高。'
+  },
+  {
+    id: '9-j-5',
+    chapter: '9',
+    type: QuestionType.Judge,
+    content: '旅客机调温系统一般把由发动机压气机引出的空气经预冷器后分成热路、冷路空气。其中冷路空气经由热交换器、压气机、涡轮进入混和室。',
+    answer: 'Y',
+    explanation: '正确描述了分路逻辑。'
+  },
+  {
+    id: '9-j-6',
+    chapter: '9',
+    type: QuestionType.Judge,
+    content: '确定气密座舱承压特性时，既要尽量满足乘员生理需求，也要考虑不使飞机结构重量增加太多。民用客机的座舱压力应高于飞行高度的气压，但低于海平面气压。',
+    answer: 'N',
+    explanation: '前半句对，但后半句表述有误导或不准确？座舱压力确实高于外界，但可以等于海平面（如低空飞行），通常巡航时低于海平面气压（即座舱高度>0）。题目判错可能是因为“应高于...低于...”这种绝对表述，或者逻辑关系。OCR答案为错。'
+  },
+  {
+    id: '9-f-1',
+    chapter: '9',
+    type: QuestionType.Fill,
+    content: '升压式空气循环制冷系统的制冷流程可概括为：来自发动机的引气被分为_____和______ 两部分，其中______经双温活门的控制直接流向混合室。而_____则在双温活门的控制下首先经过______进行初步冷却，然后由空气循环机的______提高压力，再经过______的降温，最后在空气循环机的_____中膨胀做功，得到的_____空气进入混合室与______空气按一定比例混合。',
+    answer: '冷路；热路；热路空气；冷路空气；初级热交换器；压气机；次级热交换器；涡轮；冷；热',
+    explanation: '考察ACM循环流程。'
+  },
+  {
+    id: '9-f-2',
+    chapter: '9',
+    type: QuestionType.Fill,
+    content: '对旅客机气密座舱空调的要求包括______。______、______、______和______几方面。',
+    answer: '座舱高度；座舱高度变化率；余压；座舱温度和湿度；座舱通风换气',
+    explanation: '同简答题1。'
   }
 ];

@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Question, QuestionType } from '../types';
-import { ArrowLeft, AlertTriangle, CheckCircle, XCircle, CheckSquare, BookOpen, Trash2, RefreshCcw, ChevronDown, ChevronUp, Eye, ThumbsUp, BarChart2 } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, CheckCircle, XCircle, BookOpen, Trash2, RefreshCcw, Eye, ThumbsUp, BarChart2 } from 'lucide-react';
 import { formatQuestionLabel } from '../utils';
 import { QuestionStat } from '../App';
 
@@ -71,22 +70,10 @@ const MistakeCard: React.FC<{
     }
   };
 
-  const submitFill = () => {
-      setIsRevealed(true);
-      const correctAns = (question.answer as string).replace(/\s+/g, '').toLowerCase();
-      const user = textInput.replace(/\s+/g, '').toLowerCase();
-      const isCorrect = correctAns === user;
-      
-      onAttempt(isCorrect);
-
-      if (isCorrect) {
-          setTimeout(onResolved, 1500);
-      }
-  }
-
   const getOptionLabel = (i: number) => String.fromCharCode(65 + i);
 
-  if (question.type === QuestionType.Short) {
+  // Unified Logic for Short Answer and Fill in the Blank
+  if (question.type === QuestionType.Short || question.type === QuestionType.Fill) {
       return (
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-rose-100/50 hover:shadow-lg transition-all relative overflow-hidden group">
             <div className={`absolute top-0 right-0 px-4 py-1.5 rounded-bl-2xl text-xs font-bold border-b border-l flex items-center gap-1 z-20 ${getAccuracyColor(accuracy)}`}>
@@ -107,7 +94,7 @@ const MistakeCard: React.FC<{
                     <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-500 tracking-wide">
                     {formatQuestionLabel(question)}
                     </span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-emerald-100 text-emerald-800">
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black uppercase ${question.type === QuestionType.Fill ? 'bg-yellow-100 text-yellow-800' : 'bg-emerald-100 text-emerald-800'}`}>
                     {question.type}
                     </span>
                 </div>
@@ -119,7 +106,7 @@ const MistakeCard: React.FC<{
                 className="w-full border-2 border-slate-100 p-4 rounded-xl mb-4 text-lg bg-slate-50 focus:bg-white focus:border-emerald-300 outline-none transition-all"
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
-                placeholder="思考关键词..."
+                placeholder={question.type === QuestionType.Fill ? "请输入答案..." : "思考关键词..."}
                 disabled={isRevealed}
                 rows={2}
             />
@@ -180,7 +167,6 @@ const MistakeCard: React.FC<{
             <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black uppercase ${
               question.type === QuestionType.Judge ? 'bg-purple-100 text-purple-800' :
               question.type === QuestionType.Multi ? 'bg-orange-100 text-orange-800' :
-              question.type === QuestionType.Fill ? 'bg-yellow-100 text-yellow-800' :
               'bg-sky-100 text-sky-800'
             }`}>
               {question.type}
@@ -191,27 +177,7 @@ const MistakeCard: React.FC<{
       <div className="text-slate-900 font-bold text-lg mb-6 leading-relaxed relative z-10">{question.content}</div>
       
       <div className="space-y-3 relative z-10">
-        {question.type === QuestionType.Fill ? (
-            <div>
-                <textarea 
-                    className={`w-full border-2 p-4 rounded-xl mb-3 text-lg transition-all ${
-                        isRevealed 
-                        ? ((question.answer as string).replace(/\s+/g, '').toLowerCase() === textInput.replace(/\s+/g, '').toLowerCase() 
-                            ? 'bg-green-50 border-green-500 text-green-900' 
-                            : 'bg-red-50 border-red-500 text-red-900')
-                        : 'bg-white border-slate-200 focus:border-rose-500 focus:ring-4 focus:ring-rose-50 outline-none'
-                    }`}
-                    value={textInput}
-                    onChange={(e) => setTextInput(e.target.value)}
-                    disabled={isRevealed}
-                    placeholder="请输入答案..."
-                    rows={2}
-                />
-                {!isRevealed && (
-                    <button onClick={submitFill} className="w-full bg-rose-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-rose-700 transition-colors shadow-lg shadow-rose-100">提交</button>
-                )}
-            </div>
-        ) : question.type === QuestionType.Judge ? (
+        {question.type === QuestionType.Judge ? (
            <div className="grid grid-cols-2 gap-3">
              {['Y', 'N'].map(opt => {
                const isSelected = selected === opt;
@@ -285,19 +251,13 @@ const MistakeCard: React.FC<{
         <div className={`mt-6 p-5 rounded-2xl text-sm border-2 animate-fade-in ${
            (question.type === QuestionType.Multi ? 
              (JSON.stringify((selected as string[]).sort()) === JSON.stringify((question.answer as string[]).sort())) : 
-             (question.type === QuestionType.Fill ? 
-                (question.answer as string).replace(/\s+/g, '').toLowerCase() === textInput.replace(/\s+/g, '').toLowerCase() : 
-                selected === question.answer
-             )
+             selected === question.answer
            ) ? 'bg-green-50/50 border-green-100 text-green-900' : 'bg-red-50/50 border-red-100 text-red-900'
         }`}>
            <div className="font-black text-lg flex items-center gap-2 mb-2">
              {(question.type === QuestionType.Multi ? 
                (JSON.stringify((selected as string[]).sort()) === JSON.stringify((question.answer as string[]).sort())) : 
-                (question.type === QuestionType.Fill ? 
-                    (question.answer as string).replace(/\s+/g, '').toLowerCase() === textInput.replace(/\s+/g, '').toLowerCase() : 
-                    selected === question.answer
-                )
+               selected === question.answer
              ) ? (
                <><CheckCircle className="w-5 h-5"/> 回答正确</>
              ) : (
@@ -325,150 +285,111 @@ const MistakeCard: React.FC<{
   );
 }
 
-// New component for Resolved Items
-const ResolvedMistakeItem: React.FC<{
-    question: Question;
-    onReview: () => void;
-}> = ({ question, onReview }) => {
-    const [isOpen, setIsOpen] = useState(false);
+const MistakesView: React.FC<MistakesViewProps> = ({
+  questions,
+  mistakeIds,
+  stats,
+  resolvedMistakeIds,
+  onExit,
+  onMistakeResolved,
+  onDelete,
+  onClearAll,
+  onReview,
+  onAttempt
+}) => {
+  const [activeTab, setActiveTab] = useState<'ACTIVE' | 'RESOLVED'>('ACTIVE');
 
-    return (
-        <div 
-            className={`bg-white rounded-3xl shadow-sm border transition-all cursor-pointer overflow-hidden ${
-                isOpen ? 'border-green-200 shadow-md' : 'border-slate-200 hover:border-green-200 hover:shadow-md opacity-70 hover:opacity-100'
-            }`}
-            onClick={() => setIsOpen(!isOpen)}
-        >
-            <div className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-black bg-green-100 text-green-700 px-2 py-1 rounded-md uppercase">Solved</span>
-                        <span className="text-xs font-bold text-slate-400">{formatQuestionLabel(question)}</span>
-                    </div>
-                    {isOpen ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
-                </div>
-                <div className="text-slate-800 font-medium mb-3">{question.content}</div>
-                
-                <div className="flex items-center justify-between">
-                    <div className="text-sm text-slate-500 bg-slate-50 p-2 px-3 rounded-xl border border-slate-100 inline-block">
-                        答案: <span className="font-bold text-green-600 ml-1">
-                            {Array.isArray(question.answer) ? question.answer.join('') : (
-                                question.type === QuestionType.Short ? '查看详情' : question.answer
-                            )}
-                        </span>
-                    </div>
-                    
-                    {isOpen && (
-                        <button 
-                            onClick={(e) => { e.stopPropagation(); onReview(); }}
-                            className="text-xs font-bold text-rose-500 bg-rose-50 hover:bg-rose-100 px-3 py-2 rounded-lg transition-colors flex items-center gap-1"
-                        >
-                            再次练习 <ArrowLeft className="w-3 h-3 rotate-180" />
-                        </button>
-                    )}
-                </div>
-            </div>
-
-            {isOpen && (
-                <div className="bg-green-50/30 p-6 border-t border-green-50 animate-fade-in">
-                    <div className="flex items-center gap-2 mb-2 text-green-800 font-bold text-xs uppercase tracking-wider">
-                        <BookOpen className="w-4 h-4" />
-                        知识点解析
-                    </div>
-                    <div className="text-slate-600 text-sm leading-7 bg-white/80 p-4 rounded-2xl border border-green-100 shadow-sm">
-                        {question.explanation || (question.type === QuestionType.Short ? question.answer : "暂无详细解析，请参考正确答案记忆。")}
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-};
-
-const MistakesView: React.FC<MistakesViewProps> = ({ questions, mistakeIds, stats, resolvedMistakeIds, onExit, onMistakeResolved, onDelete, onClearAll, onReview, onAttempt }) => {
-  const [activeTab, setActiveTab] = useState<'PENDING' | 'RESOLVED'>('PENDING');
-  
-  const pendingQuestions = questions.filter(q => mistakeIds.includes(q.id));
-  const resolvedQuestions = questions.filter(q => resolvedMistakeIds.includes(q.id));
-
-  const displayQuestions = activeTab === 'PENDING' ? pendingQuestions : resolvedQuestions;
+  const activeMistakes = questions.filter(q => mistakeIds.includes(q.id));
+  const resolvedMistakes = questions.filter(q => resolvedMistakeIds.includes(q.id));
 
   return (
-    <div className="flex flex-col h-full w-full max-w-3xl mx-auto bg-white sm:rounded-2xl sm:shadow-xl overflow-hidden sm:my-8 sm:h-[90vh] border border-slate-200">
-      <div className="bg-white/90 backdrop-blur-sm border-b border-slate-100 p-5 sticky top-0 z-20">
+    <div className="flex flex-col h-full w-full max-w-2xl mx-auto bg-white sm:rounded-2xl sm:shadow-xl overflow-hidden sm:my-8 sm:h-[90vh] border border-slate-200">
+      <div className="bg-white/90 backdrop-blur-md border-b border-slate-100 p-5 sticky top-0 z-20">
         <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-4">
-              <button onClick={onExit} className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors">
+          <div className="flex items-center gap-3">
+             <button onClick={onExit} className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors">
                 <ArrowLeft className="w-6 h-6" />
-              </button>
-              <h2 className="font-black text-xl text-slate-800 flex items-center gap-2">
-                <AlertTriangle className="w-6 h-6 text-rose-500 fill-rose-50" />
-                错题本
-              </h2>
-            </div>
-            {activeTab === 'PENDING' && pendingQuestions.length > 0 && (
-              <button 
-                onClick={onClearAll}
-                className="text-xs text-rose-600 bg-rose-50 hover:bg-rose-100 px-3 py-2 rounded-lg transition-colors font-bold flex items-center gap-1"
-              >
-                <Trash2 className="w-3 h-3" />
-                清空
-              </button>
-            )}
+             </button>
+             <div>
+                <h2 className="font-black text-xl text-slate-800 flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5 text-rose-500 fill-rose-500" />
+                    错题本
+                </h2>
+                <div className="text-xs text-slate-400 font-medium mt-0.5">
+                    {activeMistakes.length} 个待复习
+                </div>
+             </div>
+          </div>
+          {activeMistakes.length > 0 && (
+             <button onClick={onClearAll} className="text-xs font-bold text-rose-500 bg-rose-50 px-3 py-2 rounded-lg hover:bg-rose-100 transition-colors">
+                清空全部
+             </button>
+          )}
         </div>
 
-        <div className="flex bg-slate-100 p-1.5 rounded-2xl">
+        <div className="flex bg-slate-100 p-1 rounded-xl">
            <button 
-             onClick={() => setActiveTab('PENDING')}
-             className={`flex-1 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm ${
-               activeTab === 'PENDING' ? 'bg-white text-rose-600' : 'text-slate-500 hover:text-slate-700 shadow-none'
-             }`}
+             onClick={() => setActiveTab('ACTIVE')}
+             className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${activeTab === 'ACTIVE' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
            >
-             待复习 ({pendingQuestions.length})
+             待复习 ({activeMistakes.length})
            </button>
            <button 
              onClick={() => setActiveTab('RESOLVED')}
-             className={`flex-1 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm ${
-               activeTab === 'RESOLVED' ? 'bg-white text-green-600' : 'text-slate-500 hover:text-slate-700 shadow-none'
-             }`}
+             className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${activeTab === 'RESOLVED' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
            >
-             本次已解决 ({resolvedQuestions.length})
+             已掌握 ({resolvedMistakes.length})
            </button>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto bg-slate-50 p-5 space-y-5 scroll-smooth">
-        {displayQuestions.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-[50vh] text-slate-400">
-            <div className={`p-6 rounded-[2rem] mb-4 shadow-sm ${activeTab === 'PENDING' ? 'bg-green-50' : 'bg-slate-200'}`}>
-                {activeTab === 'PENDING' ? <CheckCircle className="w-12 h-12 text-green-500" /> : <CheckSquare className="w-12 h-12 text-slate-400" />}
-            </div>
-            <p className="text-xl font-bold text-slate-700 mb-1">
-              {activeTab === 'PENDING' ? '太棒了！' : '空空如也'}
-            </p>
-            <p className="text-sm font-medium">
-              {activeTab === 'PENDING' ? '暂时没有待复习的错题' : '还没有解决任何错题'}
-            </p>
-          </div>
-        ) : (
-          displayQuestions.map((q) => (
-            activeTab === 'PENDING' ? (
-               <MistakeCard 
-                 key={q.id} 
-                 question={q} 
-                 stats={stats}
-                 onResolved={() => onMistakeResolved(q.id)} 
-                 onDelete={() => onDelete(q.id)}
-                 onAttempt={(isCorrect) => onAttempt(q.id, isCorrect)}
-               />
+      <div className="flex-1 overflow-y-auto bg-slate-50 p-5 space-y-6 scroll-smooth">
+         {activeTab === 'ACTIVE' ? (
+            activeMistakes.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-[50vh] text-slate-400">
+                    <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                        <CheckCircle className="w-8 h-8 text-slate-300" />
+                    </div>
+                    <p className="font-bold text-slate-500">太棒了！暂无错题</p>
+                    <p className="text-xs mt-2">继续保持，去刷刷新题吧</p>
+                </div>
             ) : (
-               <ResolvedMistakeItem 
-                 key={q.id}
-                 question={q}
-                 onReview={() => onReview(q.id)}
-               />
+                activeMistakes.map(q => (
+                    <MistakeCard 
+                        key={q.id} 
+                        question={q} 
+                        stats={stats}
+                        onResolved={() => onMistakeResolved(q.id)}
+                        onDelete={() => onDelete(q.id)}
+                        onAttempt={(correct) => onAttempt(q.id, correct)}
+                    />
+                ))
             )
-          ))
-        )}
+         ) : (
+            resolvedMistakes.length === 0 ? (
+                <div className="text-center py-20 text-slate-400 text-sm">暂无已解决的错题</div>
+            ) : (
+                <div className="space-y-3">
+                   {resolvedMistakes.map(q => (
+                       <div key={q.id} className="bg-white p-4 rounded-2xl border border-slate-100 opacity-60 hover:opacity-100 transition-opacity">
+                           <div className="flex justify-between items-start mb-2">
+                              <span className="text-[10px] font-bold bg-slate-100 text-slate-500 px-2 py-1 rounded">{formatQuestionLabel(q)}</span>
+                              <span className="text-emerald-600 font-bold text-xs flex items-center gap-1">
+                                  <CheckCircle className="w-3 h-3" /> 已掌握
+                              </span>
+                           </div>
+                           <div className="font-bold text-slate-800 text-sm mb-3">{q.content}</div>
+                           <button 
+                             onClick={() => onReview(q.id)} 
+                             className="w-full py-2 bg-slate-50 text-slate-600 font-bold text-xs rounded-lg hover:bg-sky-50 hover:text-sky-600 transition-colors"
+                           >
+                             再次复习
+                           </button>
+                       </div>
+                   ))}
+                </div>
+            )
+         )}
       </div>
     </div>
   );

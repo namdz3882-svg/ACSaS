@@ -71,7 +71,7 @@ const QuizView: React.FC<QuizViewProps> = ({
   }
 
   const isCorrect = (q: Question, userAns: string | string[]) => {
-    if (q.type === QuestionType.Short) return true; // Short answers are self-graded
+    if (q.type === QuestionType.Short || q.type === QuestionType.Fill) return true; // Self-graded
     if (!userAns) return false;
     
     if (q.type === QuestionType.Multi) {
@@ -79,11 +79,6 @@ const QuizView: React.FC<QuizViewProps> = ({
       const user = userAns as string[];
       if (correct.length !== user.length) return false;
       return correct.sort().join('') === user.sort().join('');
-    }
-    if (q.type === QuestionType.Fill) {
-        const correct = (q.answer as string).replace(/\s+/g, '').toLowerCase();
-        const user = (userAns as string).replace(/\s+/g, '').toLowerCase();
-        return correct === user;
     }
     return q.answer === userAns;
   };
@@ -127,12 +122,7 @@ const QuizView: React.FC<QuizViewProps> = ({
   const handleSubmit = () => {
     let userAns: string | string[] = selectedAnswers[currentQuestion.id];
     
-    if (currentQuestion.type === QuestionType.Fill) {
-        userAns = textAnswer;
-        setSelectedAnswers({ ...selectedAnswers, [currentQuestion.id]: userAns });
-    }
-
-    if (!userAns || (Array.isArray(userAns) && userAns.length === 0) || (typeof userAns === 'string' && !userAns.trim())) return;
+    if (!userAns || (Array.isArray(userAns) && userAns.length === 0)) return;
     
     setShowAnswer({ ...showAnswer, [currentQuestion.id]: true });
 
@@ -144,11 +134,11 @@ const QuizView: React.FC<QuizViewProps> = ({
     }
   };
 
-  // Special handler for Short Answer self-grading
-  const handleShortAnswerSelfGrade = (isUserCorrect: boolean) => {
+  // Special handler for Self-grading (Short Answer & Fill)
+  const handleSelfGrade = (isUserCorrect: boolean) => {
       onAttempt(currentQuestion.id, isUserCorrect);
       if (!isUserCorrect) {
-          nextQuestion();
+          nextQuestion(); 
       } else {
           handleCorrectAnswer();
       }
@@ -157,8 +147,8 @@ const QuizView: React.FC<QuizViewProps> = ({
   const handleShowAnswer = () => {
     if (showAnswer[currentQuestion.id]) return;
     
-    // For Short answers, we just reveal, we don't mark wrong yet
-    if (currentQuestion.type === QuestionType.Short) {
+    // For Short/Fill answers, we just reveal, we don't mark wrong yet
+    if (currentQuestion.type === QuestionType.Short || currentQuestion.type === QuestionType.Fill) {
         setShowAnswer({ ...showAnswer, [currentQuestion.id]: true });
         return;
     }
@@ -185,7 +175,7 @@ const QuizView: React.FC<QuizViewProps> = ({
   const renderOptions = () => {
     const isRevealed = showAnswer[currentQuestion.id];
 
-    if (currentQuestion.type === QuestionType.Short) {
+    if (currentQuestion.type === QuestionType.Short || currentQuestion.type === QuestionType.Fill) {
         return (
             <div className="mt-8 space-y-6">
                 <div className="relative">
@@ -193,7 +183,7 @@ const QuizView: React.FC<QuizViewProps> = ({
                       value={textAnswer}
                       onChange={(e) => setTextAnswer(e.target.value)}
                       disabled={isRevealed}
-                      placeholder="在此输入您的思考或关键词（可选）..."
+                      placeholder={currentQuestion.type === QuestionType.Fill ? "在此输入您的答案..." : "在此输入您的思考或关键词（可选）..."}
                       className="w-full p-5 rounded-2xl border-2 border-emerald-100 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-50 bg-emerald-50/30 focus:bg-white outline-none transition-all min-h-[140px] text-lg resize-none"
                   />
                 </div>
@@ -219,14 +209,14 @@ const QuizView: React.FC<QuizViewProps> = ({
                         
                         <div className="flex gap-3">
                             <button
-                                onClick={() => handleShortAnswerSelfGrade(false)}
+                                onClick={() => handleSelfGrade(false)}
                                 className="flex-1 py-4 bg-rose-100 text-rose-700 rounded-2xl font-bold hover:bg-rose-200 transition-colors flex items-center justify-center gap-2 active:scale-95"
                             >
                                 <ThumbsDown className="w-5 h-5" />
                                 回答错误 (加入错题)
                             </button>
                             <button
-                                onClick={() => handleShortAnswerSelfGrade(true)}
+                                onClick={() => handleSelfGrade(true)}
                                 className="flex-1 py-4 bg-green-100 text-green-700 rounded-2xl font-bold hover:bg-green-200 transition-colors flex items-center justify-center gap-2 active:scale-95"
                             >
                                 <ThumbsUp className="w-5 h-5" />
@@ -234,42 +224,6 @@ const QuizView: React.FC<QuizViewProps> = ({
                             </button>
                         </div>
                     </div>
-                )}
-            </div>
-        );
-    }
-
-    if (currentQuestion.type === QuestionType.Fill) {
-        return (
-            <div className="mt-8 space-y-4">
-                <div className="relative">
-                  <textarea
-                      value={isRevealed ? (selectedAnswers[currentQuestion.id] as string) : textAnswer}
-                      onChange={(e) => setTextAnswer(e.target.value)}
-                      disabled={isRevealed}
-                      placeholder="在此输入您的答案..."
-                      className={`w-full p-5 rounded-2xl border-2 outline-none transition-all min-h-[140px] text-lg resize-none ${
-                          isRevealed 
-                          ? (isCorrect(currentQuestion, selectedAnswers[currentQuestion.id]) 
-                              ? 'border-green-500 bg-green-50/50 text-green-900' 
-                              : 'border-red-500 bg-red-50/50 text-red-900')
-                          : 'border-slate-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-50 bg-slate-50 focus:bg-white'
-                      }`}
-                  />
-                  {!isRevealed && (
-                    <div className="absolute bottom-4 right-4 text-xs text-slate-400">
-                      按下方按钮提交
-                    </div>
-                  )}
-                </div>
-                
-                {!isRevealed && (
-                    <button 
-                        onClick={handleSubmit}
-                        className="w-full py-4 bg-sky-600 text-white rounded-2xl font-bold hover:bg-sky-700 transition-colors shadow-lg shadow-sky-200 active:scale-95"
-                    >
-                        确认提交
-                    </button>
                 )}
             </div>
         );
@@ -465,8 +419,8 @@ const QuizView: React.FC<QuizViewProps> = ({
 
         {renderOptions()}
 
-        {/* Explanation / Result Box */}
-        {showAnswer[currentQuestion.id] && currentQuestion.type !== QuestionType.Short && (
+        {/* Explanation / Result Box for non-self-graded questions */}
+        {showAnswer[currentQuestion.id] && currentQuestion.type !== QuestionType.Short && currentQuestion.type !== QuestionType.Fill && (
           <div className="mt-8 animate-fade-in pb-4">
              <div className={`rounded-3xl p-6 border-2 space-y-4 ${isCorrect(currentQuestion, selectedAnswers[currentQuestion.id]) ? 'bg-green-50/50 border-green-100' : 'bg-red-50/50 border-red-100'}`}>
                 
@@ -498,8 +452,8 @@ const QuizView: React.FC<QuizViewProps> = ({
           </div>
         )}
         
-        {/* Specific explanation block for Short Answer (shown inside renderOptions for better flow, but can be here too) */}
-        {showAnswer[currentQuestion.id] && currentQuestion.type === QuestionType.Short && (
+        {/* Specific explanation block for Short Answer & Fill (shown inside renderOptions for better flow, but can be here too) */}
+        {showAnswer[currentQuestion.id] && (currentQuestion.type === QuestionType.Short || currentQuestion.type === QuestionType.Fill) && (
              <div className="mt-6 pt-1 animate-fade-in pb-4">
                 <div className="flex items-center gap-2 mb-3 text-slate-800 font-bold text-sm">
                     <BookOpen className="w-4 h-4 text-emerald-500" />
@@ -525,8 +479,8 @@ const QuizView: React.FC<QuizViewProps> = ({
          </button>
         
         <div className="flex items-center gap-3 ml-auto">
-            {/* Show Answer Button - Hidden for Short Answer as it's inline, and hidden if already revealed */}
-            {!showAnswer[currentQuestion.id] && currentQuestion.type !== QuestionType.Short && (
+            {/* Show Answer Button - Hidden for Short/Fill as it's inline, and hidden if already revealed */}
+            {!showAnswer[currentQuestion.id] && currentQuestion.type !== QuestionType.Short && currentQuestion.type !== QuestionType.Fill && (
                 <button
                     onClick={handleShowAnswer}
                     className="flex items-center gap-2 px-4 py-3.5 rounded-2xl font-bold text-amber-600 bg-amber-50 hover:bg-amber-100 border border-amber-100 transition-colors active:scale-95"
@@ -536,8 +490,8 @@ const QuizView: React.FC<QuizViewProps> = ({
                 </button>
             )}
 
-            {/* Next button - For Short Answer, we hide the main Next button if answer is revealed because we have the Thumbs Up/Down */}
-            {!(currentQuestion.type === QuestionType.Short && showAnswer[currentQuestion.id]) && (
+            {/* Next button - For Short/Fill, we hide the main Next button if answer is revealed because we have the Thumbs Up/Down */}
+            {!((currentQuestion.type === QuestionType.Short || currentQuestion.type === QuestionType.Fill) && showAnswer[currentQuestion.id]) && (
                 <button 
                 onClick={nextQuestion}
                 className="flex items-center gap-2 px-8 py-3.5 rounded-2xl font-bold shadow-lg shadow-sky-200 transition-all bg-sky-600 text-white hover:bg-sky-700 active:scale-95 hover:shadow-xl"
